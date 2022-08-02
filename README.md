@@ -12,7 +12,7 @@ Password Generator
 
 # Games
 
-Raise A Batched Floppa By [GladfanIsHere](GladfanIsHere)
+Raise A Batched Floppa By [GladfanIsHere](https://github.com/GladfanIsHere/Raise-a-batched-floppa)
 Tic Tac Toe
 RPG
 Guess The Number
@@ -25,7 +25,7 @@ So Don't Move The Batch File.
 It Will Create Folder Named :
 
 UserDatas
-NotesData
+NotesData 
 stats
 slot1
 slot2
