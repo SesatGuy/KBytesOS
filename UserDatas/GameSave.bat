@@ -1,0 +1,17 @@
+set NAME=Org
+set MHP=45
+set HP=45
+set DMG=6
+set LVL=1
+set EXP=55
+set MEXP=80
+set GOLD=160
+set DEF=2
+set MS=2
+set WEP=2
+set ARM=2
+set HPU=2
+set BLOCKt=FALSE
+set BOSS1=FALSE
+set BOSS2=FALSE
+set BOSS=FALSE
