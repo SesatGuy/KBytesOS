@@ -397,7 +397,7 @@ echo 1.Guess The Number
 echo 2.RPG
 echo 3.Tictactoc
 echo 4.Raise A Floppa
-echo 0.Menu
+echo 5.Menu
 echo.
 choice /c 12345 /n >nul
 if %ERRORLEVEL%==1 goto gtn
@@ -1337,7 +1337,7 @@ cls
 title Password Generator
 echo I will make you a new password.
 echo Please write the password down somewhere in case you forget it.
-echo ----------------------------------------­-----------------------
+echo ----------------------------------------Â­-----------------------
 echo 1) 1 Random Password
 echo 2) 5 Random Passwords
 echo 3) 10 Random Passwords
