@@ -397,7 +397,7 @@ echo 1.Guess The Number
 echo 2.RPG
 echo 3.Tictactoc
 echo 4.Raise A Floppa
-echo 0.Menu
+echo 5.Menu
 echo.
 choice /c 12345 /n >nul
 if %ERRORLEVEL%==1 goto gtn
