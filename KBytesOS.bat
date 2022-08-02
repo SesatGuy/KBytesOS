@@ -185,7 +185,7 @@ echo      KBYTES__OS
 echo.=======================
 echo     DETAILS  
 echo.
-echo   Last Update : 1/8/2022
+echo   Last Update : 2/8/2022
 echo.
 echo   Size : 53.7 KB
 echo.
@@ -226,7 +226,7 @@ echo Version 0.5 - Added Raise A Floppa Game,Fixed Bugs
 echo.
 echo Version 0.4.0/0.4.1 - Register Users,Better Notepad,UserData
 echo.
-echo Version 0.3.0 - Added RPG Game, Fixed Some Bugs, Auto-click
+echo Version 0.3.0 - Added RPG Game, Fixed Some Bugs, Auto-click Thing
 echo.
 echo Version 0.2.5 - Added Notepad, Fixed Some UI.
 echo.
@@ -235,7 +235,7 @@ echo.
 echo Version 0.1.0 - Added OS And Importand Apps.
 echo.
 echo.========================
-echo   Last Update : 31/7/2022
+echo   Last Update : 2/8/2022
 echo.========================
 echo.
 echo Press 1 To Go Back To Menu
