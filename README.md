@@ -12,10 +12,7 @@ Password Generator
 
 # Games
 
-Raise A Batched Floppa By [GladfanIsHere](https://github.com/GladfanIsHere/Raise-a-batched-floppa)
-Tic Tac Toe
-RPG
-Guess The Number
+Raise A Batched Floppa By [GladfanIsHere](https://github.com/GladfanIsHere/Raise-a-batched-floppa), Tic Tac Toe, RPG, Guess The Number
 
 # Reminder 
 
@@ -24,14 +21,4 @@ So Don't Move The Batch File.
 
 It Will Create Folder Named :
 
-UserDatas
-
-NotesData 
-
-stats
-
-slot1
-
-slot2
-
-slot3
+UserDatas, NotesData ,stats, slot1, slot2, slot3 and some other data file for RABF, ;ogin And Notepad Save File
