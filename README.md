@@ -6,9 +6,7 @@ File Size : 53.7 KB
 # Features 
 
 IDK
-Notepad
-Calculator
-Password Generator
+Notepad, Calculator, Password Generator
 
 # Games
 
@@ -16,7 +14,7 @@ Raise A Batched Floppa By [GladfanIsHere](https://github.com/GladfanIsHere/Raise
 
 # Reminder 
 
-This File Will create UserDatas Folder If You Don't Have it for storing data.
+This Batch File Will Create "UserDatas" Folder If You Don't Have It The Files For Storing Data.
 So Don't Move The Batch File.
 
 It Will Create Folder Named :
