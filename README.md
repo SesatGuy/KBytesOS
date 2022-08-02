@@ -25,8 +25,13 @@ So Don't Move The Batch File.
 It Will Create Folder Named :
 
 UserDatas
+
 NotesData 
+
 stats
+
 slot1
+
 slot2
+
 slot3
