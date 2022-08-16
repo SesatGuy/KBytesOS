@@ -1,7 +1,7 @@
 # KBytesOS
 A Simple OS Made In Batch. All Feature In One File.
 
-File Size : 53.7 KB
+File Size : 60.9 KB
 
 # Features 
 
@@ -13,6 +13,8 @@ Notepad, Calculator, Password Generator
 Raise A Batched Floppa By [GladfanIsHere](https://github.com/GladfanIsHere/Raise-a-batched-floppa), Tic Tac Toe, RPG, Guess The Number
 
 # Reminder 
+
+-There May Bug So Yeah-
 
 This Batch File Will Create "UserDatas" Folder If You Don't Have It The Files For Storing Data.
 So Don't Move The Batch File.
