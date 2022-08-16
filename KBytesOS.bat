@@ -189,7 +189,7 @@ echo     DETAILS
 echo.
 echo   Last Update : 2/8/2022
 echo.
-echo   Size : 53.7 KB
+echo   Size : 80.9 KB
 echo.
 echo   UserName : %User%
 echo   Password : %pass%
@@ -1338,7 +1338,7 @@ cls
 title Password Generator
 echo I will make you a new password.
 echo Please write the password down somewhere in case you forget it.
-echo ----------------------------------------­-----------------------
+echo ----------------------------------------Â­-----------------------
 echo 1) 1 Random Password
 echo 2) 5 Random Passwords
 echo 3) 10 Random Passwords
