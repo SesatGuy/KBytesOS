@@ -12,13 +12,13 @@ Notepad, Calculator, Password Generator
 
 # Games
 
-Raise A Batched Floppa By [GladfanIsHere](https://github.com/GladfanIsHere/Raise-a-batched-floppa), Tic Tac Toe, RPG, Guess The Number
+Raise A Batched Floppa V 0.1.3 By [GladfanIsHere](https://github.com/GladfanIsHere/Raise-a-batched-floppa), Tic Tac Toe, RPG, Guess The Number
 
 # Reminder 
 
 -There May Bug So Yeah-
 
-This Batch File Will Create "UserDatas" Folder If You Don't Have It The Files For Storing Data.
+This Batch File Will Create "UserDatas" Folder If You Don't Have It ,For Storing Data.
 So Don't Move The Batch File.
 
 It Will Create Folder Named :
