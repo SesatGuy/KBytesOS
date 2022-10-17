@@ -1,7 +1,7 @@
 # KBytesOS // Inactive
 A Simple OS Made In Batch. All Feature In One File.
 
-(Inactive For Focusing On ESP8266 Project)
+(Inactive For Focusing On Other Project)
 
 File Size : 81.3 KB
 
