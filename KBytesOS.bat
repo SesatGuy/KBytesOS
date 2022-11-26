@@ -59,7 +59,7 @@ if not exist "%Directory6%\*" (
 
 cls
 echo KBytes.OS V%version%
-echo DOS Boot Loader 0.5
+echo KB DOS Boot Loader 0.5
 echo FOUND at Dev/0.4
 echo.
 echo Booting Kernel...
@@ -1350,7 +1350,7 @@ cls
 title Password Generator
 echo I will make you a new password.
 echo Please write the password down somewhere in case you forget it.
-echo ----------------------------------------­-----------------------
+echo ----------------------------------------Â­-----------------------
 echo 1) 1 Random Password
 echo 2) 5 Random Passwords
 echo 3) 10 Random Passwords
