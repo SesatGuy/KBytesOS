@@ -1,7 +1,5 @@
-# KBytesOS // Inactive
+# KBytesOS
 A Simple OS Made In Batch. All Feature In One File.
-
-(Inactive For Focusing On Other Project)
 
 File Size : 81.3 KB
 
