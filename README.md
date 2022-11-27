@@ -12,6 +12,7 @@ File Size : 81.3 KB
 ## Why Should You Trust This Garbage OS?
 
 * Because You Can
+* One FIle = Everything Inside
 * Use 0% Of CPU Usage And 1% Of RAM Usage
 * Wifi Is Useless
 
