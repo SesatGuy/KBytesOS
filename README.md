@@ -1,26 +1,29 @@
 # KBytesOS
 #### A Open-Sourced Windows's Batch operating system.
 
-File Size : 98.6 KB
+Have You Tired With Operation System That Laggy?
+Dont't Worry KBytesOS Here To Help You.
 
 # Features 
+We Have All Features That Everyone Need In Basic Use
 
+* Browser
+* Folders
 * Notepad
 * Calculator
-* Password Generator
 
 ## Why Should You Trust This Garbage OS?
 
 * Because You Can
 * One FIle = Everything Inside
-* Use 0% Of CPU Usage And 1% Of RAM Usage
+* Use 0.1% Of CPU Usage And 1.5% Of RAM Usage
 * Wifi Is Useless
 
 # Games
 
 * Raise A Batched Floppa V 0.1.3 By [GladfanIsHere](https://github.com/GladfanIsHere/Raise-a-batched-floppa)
 * Tic Tac Toe
-* RPG
+* Fantasy RPG
 * Guess The Number
 
 # Reminder 
