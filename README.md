@@ -1,7 +1,7 @@
 # KBytesOS
 #### A Open-Sourced Windows's Batch operating system.
 
-File Size : 81.3 KB
+File Size : 98.6 KB
 
 # Features 
 
