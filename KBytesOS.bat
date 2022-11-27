@@ -1,7 +1,8 @@
 color 0f
 title KBytesOS
-set version=0.5.2
+set version=0.5.3
 @echo off
+setlocal EnableDelayedExpansion
 set "Directory=UserDatas"
 
 md "%Directory%" 2>nul
@@ -58,9 +59,9 @@ if not exist "%Directory6%\*" (
 )
 
 cls
-echo KBytes.OS V%version%
-echo KB DOS Boot Loader 0.5
-echo FOUND at Dev/0.4
+echo KBytes.OS v%version%
+echo KB DOS Boot Loader 0.5.1
+echo FOUND at Dev/0.4.2
 echo.
 echo Booting Kernel...
 timeout /T 2 /NOBREAK >nul
@@ -85,10 +86,12 @@ echo ------------------------------
 ping localhost -n 1 >nul
 set/a loadnum=%loadnum% +1
 if %loadnum%==15 goto Done
+if %loadnum%==30 goto Done
 rem For loading thinging
 goto Loading
 :Done
 echo Starting...
+set/a loadnum=0
 ping localhost -n 2 >nul
 goto options
 
@@ -145,31 +148,41 @@ ping localhost -n 2 >nul
 goto menu
 
 :menu
+color 0f
 title -Menu- KBytesOS 
 cls
-echo ---------------------
-echo        Menu
-echo    Welcome, %user%
-echo    %time% %date%
-echo ---------------------
+echo =============================
+echo             Menu
+echo       Welcome, %user%
+echo =============================
 echo.
-echo 1.Games
-echo 2.Password Generator
-echo 3.Calculator
-echo 4.Notepad
-echo 5.Update Log
-echo 6.System Info
-echo 7.Shutdown
-echo.
+echo [1] Notepad
+echo [2] Calculator
+echo [3] Games
+echo [4] Password Generator
+echo [5] Setting
+echo =============================
+echo [6] Restart
+echo [7] Shutdown
+echo =============================
 
-choice /c 12345678 /n >nul
-if %ERRORLEVEL%==1 goto games
-if %ERRORLEVEL%==2 goto passgen
-if %ERRORLEVEL%==3 goto calc
-if %ERRORLEVEL%==4 goto notes
-if %ERRORLEVEL%==5 goto updatelog
-if %ERRORLEVEL%==6 goto info
+choice /c 1234567 /n >nul
+if %ERRORLEVEL%==1 goto notes
+if %ERRORLEVEL%==2 goto calc
+if %ERRORLEVEL%==3 goto games
+if %ERRORLEVEL%==4 goto passgen
+if %ERRORLEVEL%==5 goto syssettings
+if %ERRORLEVEL%==6 goto restart
 if %ERRORLEVEL%==7 goto shutdown
+
+:restart
+cls
+echo System Will Restarting
+pause
+cls
+echo System Is Restarting...
+timeout /t /5 /NOBREAK 
+goto Loading
 
 :shutdown
 cls
@@ -181,21 +194,38 @@ timeout /t /5 /NOBREAK
 exit
 
 
+:syssettings
+title -Setting- KBytesOS 
+cls
+echo.=============================
+echo      KBYTES__OS SETTING
+echo.=============================
+echo [1] Go To System Info
+echo [2] Go To Update Logs
+ehco [3] Go To About
+echo [4] Go To Menu
+echo.=============================
+choice /c 1234 /n >nul
+if %ERRORLEVEL% EQU 1 goto info
+if %ERRORLEVEL% EQU 2 goto updatelog 
+if %ERRORLEVEL% EQU 3 goto sysabout 
+if %ERRORLEVEL% EQU 4 goto menu
+
 :info
 title -Info- KBytesOS 
 cls
-echo.=======================
-echo      KBYTES__OS
-echo.=======================
-echo     DETAILS  
+echo.=============================
+echo         KBYTES__OS
+echo.=============================
+echo         DETAILS  
 echo.
 echo   Last Update : 17/8/2022
 echo.
-echo   Size : 81.3 KB
+echo   Size : 98.2 KB
 echo.
 echo   UserName : %User%
 echo   Password : %pass%
-echo.=======================
+echo.=============================
 echo     HARDWARE INFO
 echo.
 echo RAM :
@@ -203,61 +233,70 @@ systeminfo | findstr /c:"Total Physical Memory"
 echo.
 echo CPU :
 wmic cpu get name
-echo.========================
-echo   (C) KBytesDev 2022
-echo.========================
+echo.==============================
+echo      (C) ARD Thing 2022
+echo.==============================
 echo.
 echo Wanna check for update?
-
-echo  1. to check for update 
-echo  2. Menu
+echo.
+echo  [1] to check for update 
+echo  [2] Back
 
 choice /c 12 /n >nul
 if %ERRORLEVEL%==1 goto updatelog
-if %ERRORLEVEL%==2 goto menu
+if %ERRORLEVEL%==2 goto syssettings
  
 
 
 :updatelog
 title -UpdateLog- KBytesOS 
 cls
-echo.=======================
+echo.=============================
 echo       OS_Update
-echo.=======================
+echo.=============================
 echo    KBYTES_OS_V_%version%
 echo.
-echo Version 0.5.2 - Fixed Bugs
+echo [1] UI Improvement
+echo [2] Added New Featurea
+echo [3] 
 echo.
-echo Version 0.5 - Added Raise A Floppa Game,Fixed Bugs
+echo.=============================
+echo v0.5.2 - Fixed Bugs
 echo.
-echo Version 0.4.0/0.4.1 - Register Users,Better Notepad,UserData
+echo v0.5 - Added Raise A Floppa Game,Fixed Bugs
 echo.
-echo Version 0.3.0 - Added RPG Game, Fixed Some Bugs, Auto-click Thing
+echo v0.4.0-v0.4.9 - Register Users,Better Notepad,UserData
 echo.
-echo Version 0.2.5 - Added Notepad, Fixed Some UI.
-echo.
-echo Version 0.2.0 - Added Start OS Loading.
-echo.
-echo Version 0.1.0 - Added OS And Importand Apps.
+echo v0.3.0 - Added RPG Game, Fixed Some Bugs, Auto-click Thing
 echo.
 echo.========================
-echo   Last Update : 2/8/2022
+echo   Last Update : 27/11/2022
 echo.========================
 echo.
-echo Press 1 To Go Back To Menu
+echo [1] Go Back To Setting
 choice /c 1 /n >nul
-if %ERRORLEVEL%==1 goto menu
+if %ERRORLEVEL%==1 goto syssettings
 
-
+:sysabout
+title -About- KBytesOS 
+cls
+echo.=============================
+echo       ABOUT KBYTES__OS
+echo.=============================
+echo KBYTES OS is an operating system that powered by Windows's Batch.
+echo This is Good OS
+echo.=============================
+choice /c 1 /n >nul
+if %ERRORLEVEL% EQU 1 goto syssettings
 
 :calc
 title -Calculator- KBytesOS
 cls
-echo Press 1 for Addition
-echo Press 2 for Subtraction
-echo Press 3 for Multiplication
-echo Press 4 for Division
-echo Press 5 to Menu
+echo [1] for Addition
+echo [2] for Subtraction
+echo [3] for Multiplication
+echo [4] for Division
+echo [5] to Menu
 choice /c 12345 /n >nul
 if %ERRORLEVEL%==1 goto a
 if %ERRORLEVEL%==2 goto b
@@ -320,16 +359,21 @@ echo             Light Notepad
 echo ________________________________________
 echo Current File - %name%
 echo.
-echo Press 1 to create a file.
-echo Press 2 to edit content of the file.
-echo Press 3 to select the file.
-echo Press 4 to exit.
+echo [1] to create a file.
+echo [2] to edit content of the file.
+echo [3] to select the file.
+echo [4] to display text from the file.
+echo [5] to exit.
+echo ________________________________________
+echo May Crash If No File Selected
+echo ________________________________________
 
-choice /c 1234 /n >nul
+choice /c 12345 /n >nul
 if %ERRORLEVEL%==1 goto creates
 if %ERRORLEVEL%==2 goto writes
 if %ERRORLEVEL%==3 goto selects
-if %ERRORLEVEL%==4 goto menu
+if %ERRORLEVEL%==4 goto displays
+if %ERRORLEVEL%==5 goto menu
 
 
 cls
@@ -360,21 +404,25 @@ echo          Light Notepad - Write
 echo ________________________________________
 echo Current File - %name%
 echo. 
-echo To add another line to your text press enter .. To stop editing press the big 
-echo red X in the corner of this screen. Also You can only use 5 Line for editing.
+echo To Use Other Line, Press Enter. To Exit Enter Uuntil To Line 6
+echo Also You can only use 6 Line for editing.
 echo.
-echo Cannot use symbols:"   > < |   " lol if you use any of them 3 symbols it closes!
+echo Cannot use symbols:"  > < |  " (It Will Crash aka close the OS)
+echo.
+echo =========================================
 echo.
 set /p content=">"
 set /p content2=">"
 set /p content3=">"
 set /p content4=">"
 set /p content5=">"
+set /p content6=">"
 echo %content% >> UserDatas\NotesData\%name%
 echo %content2% >> UserDatas\NotesData\%name%
 echo %content3% >> UserDatas\NotesData\%name%
 echo %content4% >> UserDatas\NotesData\%name%
 echo %content5% >> UserDatas\NotesData\%name%
+echo %content6% >> UserDatas\NotesData\%name%
 cls
 echo Save Successful!
 ping localhost -n 2 >nul
@@ -389,23 +437,38 @@ echo ________________________________________
 echo Current File - %name%
 echo. 
 echo Type in the name eg. 'hello.ltxd' or 'hello.bat'
+echo (Make Sure It Saved In "UserDatas\NotesData"
 echo.
 set /p name=">"
 goto notes
 
+:displays
+cls
+echo ________________________________________
+echo.
+echo          Light Notepad - Select
+echo ________________________________________
+echo Current File - %name%
+echo. 
+FOR /F "usebackq tokens=* delims=" %%x in ("UserDatas\NotesData\%name%") DO echo %%x
+echo.
+echo PRESS ANY KEY TO CONTINUE...
+pause >nul 
+goto notes
 
 
 :games
+color 0f
 title -Games- KBytesOS
 cls
 echo %time% %date%
 echo.
-echo *Here Some Games We have...
+echo Games Available
 echo.
 echo 1.Guess The Number
 echo 2.RPG
 echo 3.Tictactoc
-echo 4.Raise A Floppa
+echo 4.Raise A Batched Floppa
 echo 5.Menu
 echo.
 choice /c 12345 /n >nul
@@ -1347,18 +1410,19 @@ title -Tic Tac Toe- KBytesOS
 :PASSGEN
 title -Pass Generator- KBytesOS
 cls
-title Password Generator
 echo I will make you a new password.
 echo Please write the password down somewhere in case you forget it.
 echo ----------------------------------------­-----------------------
 echo 1) 1 Random Password
 echo 2) 5 Random Passwords
 echo 3) 10 Random Passwords
+echo 4) Exit
 echo Input your choice
 choice /c 123 /n >nul
 if %ERRORLEVEL%==1 goto A if NOT goto PASSGEN
 if %ERRORLEVEL%==2 goto B if NOT goto PASSGEN
 if %ERRORLEVEL%==3 goto C if NOT goto PASSGEN
+if %ERRORLEVEL%==4 goto menu
 :A
 cls
 echo Your password is %random%
@@ -1435,7 +1499,7 @@ echo.
 echo !SplashText!
 echo.
 echo         Version
-echo          0.1.3 
+echo          0.1.4
 echo     (KBOS Modified)
 echo -----------------------
 echo 1) Play
@@ -1504,6 +1568,8 @@ echo       Created by
 echo      GladfanIsHere
 echo      Contributors
 echo      Sissiogamer1
+echo Random Guy That Edit This
+echo        SesatGuy
 echo -----------------------
 echo 1) Return
 choice /c 1 /m "Return? "
@@ -1513,38 +1579,216 @@ if %errorlevel% equ 1 (
 )
 
 :startoptions
+color 60
 cls
 echo      Start Options
-echo -----------------------
+echo.
 echo 1) New game
 echo 2) Load game
-echo 3) Return
-echo -----------------------
+echo 3) Delete slot
+echo 4) Update slot [BETA]
+echo 5) Return
 echo.
-choice /c 123
+echo.
+choice /c 12345
    
 if %errorlevel% equ 1 (
-    goto newgames
+    goto newgame
 )
 if %errorlevel% equ 2 (
     goto loadgame
 )
 if %errorlevel% equ 3 (
+    goto deletegame
+)
+if %errorlevel% equ 4 (
+    goto updategame
+)
+if %errorlevel% equ 5 (
     goto rabf
 )
 pause
 
-::New "newgames" (Slot selector)
-:newgames
+:: [BETA FUNCTION] Update a slot save file
+:updategame
 set selectedSlot=0
+color e0
 cls
 echo      Game slots
-echo -----------------------
+echo.
 echo 1) Slot 1
 echo 2) Slot 2
 echo 3) Slot 3
 echo 4) Return
-echo -----------------------
+echo 5) Help
+echo.
+echo Select the slot you want to update, remember that this
+echo feature is still in a BETA state and might not work properly,
+echo expect data losses or corruptions. If you're new with the
+echo Updating feature, you can get more information about it by
+echo selecting "Help". 
+echo.
+choice /c 12345 /m "Which slot are you UPDATING? "
+if %errorlevel% equ 1 (
+    set selectedSlot=1
+    goto updategameConfirmation
+)
+if %errorlevel% equ 2 (
+    set selectedSlot=2
+    goto updategameConfirmation
+)
+if %errorlevel% equ 3 (
+    set selectedSlot=3
+    goto updategameConfirmation
+)
+if %errorlevel% equ 4 (
+    goto rabf
+)
+if %errorlevel% equ 5 (
+    goto updategameHelp
+)
+
+::Help menu of the BETA update feature
+:updategameHelp
+cls
+echo   Help with the Update feature
+echo.
+echo To update an old game slot, first you will need to copy
+echo an old save slot that is atleast from version 0.1.3 from
+echo their respective folder, you can find the slot folder in
+echo the v0.1.3 folder at stats\slot[NUMBER of the slot you want to update]
+echo then you copy the content of the folder and then you paste it
+echo in the folder of this version at UserDatas/updateSlots/slot[NUMBER]
+echo and finally, you select the slot where you pasted the content
+echo in the update menu.
+echo Note: The "Update feature" doesn't work with slots from 0.1 - 0.1.1
+echo.
+echo.
+echo 1) Return
+echo 2) Create extra-information txt file.
+echo.
+choice /c 12
+if %errorlevel% equ 1 (
+    goto updategame
+)
+if %errorlevel% equ 2 (
+    (
+        echo You can update slots from v0.1.2, but since those slots don't create any "configData.fdata" files,
+        echo you will have to copy a "configData.fdata" file from a v0.1.3 slot and then paste it into the v0.1.2
+        echo slot that you want to update, you just will have to change the "0.1.3" inside of the file to "0.1.2"
+        echo and then just follow the instructions to update a slot. This WON'T WORK with 'slots' from version 0.1 - 0.1.1 because
+        echo there were no slots on those versions, slots were added in version 0.1.2, so don't try to update 'slots' from v0.1 - 0.1.1
+    )> Extra-Information.txt
+    goto updategameHelp
+)
+
+::Confirmation screen
+:updategameConfirmation
+cls
+echo.
+echo Are you sure you want to UPDATE slot %selectedSlot%?
+echo when the update process is done, the slot will be
+echo saved in your slot %selectedSlot%, this cannot be undone.
+echo.
+echo               1. Yes 2. No
+echo.
+choice /c 12 /m "Yes or no? "
+if %errorlevel% equ 1 (
+    if exist UserDatas/updateSlots\slot%selectedSlot%\inUse.fdata (
+        (
+            set /p slotVersion=
+            set /p slotGamemode=
+        )< UserDatas/updateSlots\slot%selectedSlot%\configData.fdata
+        set selectedSlot=%selectedSlot%
+        set version=%version%
+        goto updates
+        exit
+    ) else (
+        cls
+        echo.
+        echo This slot does not have any saved data to update
+        echo.
+        echo Press any key to continue
+        pause >nul
+    )
+)
+if %errorlevel% equ 2 (
+    goto updategame
+)
+goto updategame
+
+
+::Delete a slot save file
+:deletegame
+set selectedSlot=0
+color 4f
+cls
+echo      Game slots
+echo.
+echo 1) Slot 1
+echo 2) Slot 2
+echo 3) Slot 3
+echo 4) Return
+echo.
+choice /c 1234 /m "Which slot are you DELETING? "
+if %errorlevel% equ 1 (
+    set selectedSlot=1
+    goto deletegameConfirmation
+)
+if %errorlevel% equ 2 (
+    set selectedSlot=2
+    goto deletegameConfirmation
+)
+if %errorlevel% equ 3 (
+    set selectedSlot=3
+    goto deletegameConfirmation
+)
+if %errorlevel% equ 4 (
+    goto rabf
+)
+
+:deletegameConfirmation
+set deleteSlot=slot%selectedSlot%
+cls
+echo Are you sure that you want to delete
+echo Slot %selectedSlot%'s saved data?
+echo.
+echo      This CANNOT be undone!
+echo         1) Yes 2) No
+echo.
+choice /c 12
+if %errorlevel% equ 1 (
+    if exist UserDatas\stats\%deleteSlot%\inUse.fdata (
+            del /Q UserDatas\stats\%deleteSlot%
+            goto deletegame
+    ) else (
+        cls
+        color c0
+        echo.
+        echo This slot does not have
+        echo any saved data to delete
+        echo.
+        echo Press any key to continue
+        pause >nul
+        goto deletegame
+    )
+)
+if %errorlevel% equ 2 (
+    goto deletegame
+)
+
+::New "newgame" (Slot selector)
+:newgame
+set selectedSlot=0
+color 60
+cls
+echo      Game slots
+echo.
+echo 1) Slot 1
+echo 2) Slot 2
+echo 3) Slot 3
+echo 4) Return
+echo.
 choice /c 1234 /m "Which slot are you selecting? "
 if %errorlevel% equ 1 (
     set selectedSlot=1
@@ -1563,16 +1807,17 @@ if %errorlevel% equ 4 (
 )
 :newstartsettings
 cls
-echo      Slot%select% settings
-echo -----------------------
+color 60
+echo Slot%select% settings
+echo.
 echo 1) Return
 echo 2) Game modes
 echo 3) Start new game
-echo -----------------------
+echo.
 echo.
 choice /c 123
 if %errorlevel% equ 1 (
-    goto newgames
+    goto newgame
 )
 if %errorlevel% equ 2 (
     goto gamemodeSelect
@@ -1585,79 +1830,15 @@ if %errorlevel% equ 3 (
     )
 )
 
-:passwordSet
-cls
-echo      Password set
-echo -----------------------
-echo 1) Return
-echo 2) Random password
-echo -----------------------
-echo         WARNING
-echo You can't use spaces or
-echo unicode charaters or else
-echo  the game could crash
-echo.
-set /p inputPass=" Insert a password> "
-pause
-set PasswordTemp=%inputPass%
-if %PasswordTemp%==1 (
-    goto newstartsettings
-)
-if %PasswordTemp%==2 (
-    goto randomPassword
-)
-goto passwordConfirmation
-goto passwordSet
-
-:randomPassword
-cls
-set /a firdig=%random% %%9
-set /a secdig=%random% %%9
-set /a thidig=%random% %%9
-set /a foudig=%random% %%9
-set /a fiftdig=%random% %%9
-
-set PasswordTemp=%firdig%%secdig%%thidig%%foudig%%fiftdig%
-goto passwordConfirmation
-
-
-:passwordConfirmation
-cls
-echo.
-echo.
-echo.
-echo Are you sure you want your Password
-echo       to be %PasswordTemp% ?
-echo.
-echo.
-echo.
-set /p inputYN=" Y/N? "
-pause
-if %inputYN%==Y (
-    cls
-    set Password=%PasswordTemp%
-    echo.
-    echo %PasswordTemp% was set as this slot's password
-    echo                 correctly!
-    echo.
-    pause
-    goto newstartsettings
-)
-if %inputYN%==N (
-    goto passwordSet
-)
-goto passwordConfirmation
-
 :gamemodeSelect
 cls
 echo       Game modes
-echo -----------------------
+echo.
 echo 1. Return
 echo 2. Normal mode
 echo 3. Hard mode
-echo -----------------------
 echo.
-choice /c 123
+choice /c 1234
 if %errorlevel% equ 1 (
    goto newstartsettings
 )
@@ -1673,18 +1854,17 @@ if %errorlevel% equ 3 (
 :hardmode
 cls
         echo      Hard mode
-        echo -----------------------
+        echo.
         echo This is the hard mode,
         echo this mode is more challenging
         echo than the normal mode,
         echo recommended for experienced
         echo players that have played
         echo the normal mode
-        echo -----------------------
+        echo.
         echo Difficulty: 7 / 7
         echo.
-        echo 1. Yes
-        echo 2. Nah, another one
+        echo 1. Select 2. Nah, another one
         echo.
         choice /c 12
         if %errorlevel% equ 1 (
@@ -1699,16 +1879,14 @@ cls
 :normalmode
 cls
         echo      Normal mode
-        echo -----------------------
+        echo.
         echo This is the normal mode,
         echo it's recommended to play
-        echo this mode after playing the
-        echo tutorial
-        echo -----------------------
+        echo this mode first
+        echo.
         echo Difficulty: 4 / 7
         echo.
-        echo 1. Yes
-        echo 2. Nah, another one
+        echo 1. Select 2. Nah, another one
         echo.
         choice /c 12
         if %errorlevel% equ 1 (
@@ -1719,7 +1897,7 @@ cls
             goto gamemodeSelect
         )   
 
-::New start (old :newgames)
+::New start (old :newgame)
 :newstart
 ::-statsSlot
 ::Floppa Stats
@@ -1741,6 +1919,8 @@ set birthdayCake=0
 set mrbeastticket=0
 set fopsoda=0
 set tag=0
+set gun=0
+set hat=0
 ::-gameSettings
 set version=0.1.3
 set gamemode=%gamemodeS%
@@ -1767,6 +1947,8 @@ if %gamemode%==2 (
     echo %mrbeastticket%
     echo %fopsoda%
     echo %tag%
+    echo %gun%
+    echo %hat%
 )> UserDatas/stats/slot%selectedSlot%/data.fdata
 ::Best score
 set bestscore=0
@@ -1788,22 +1970,23 @@ set dhealth1=Your Floppa health was not good...
 (
     echo %version%
     echo %gamemode%
-)> UserDatas/stats/slot%selectedSlot%/inUse.fdata
+)> UserDatas/stats/slot%selectedSlot%/configData.fdata
 goto loadgamestart
 
 
 
 ::New "loadgame" (Slot selector)
 :loadgame
+color 30
 set selectedSlot=0
 cls
 echo    Load a Game slot
-echo -----------------------
+echo.
 echo 1) Slot 1
 echo 2) Slot 2
 echo 3) Slot 3
 echo 4) Return
-echo -----------------------
+echo.
 choice /c 1234 /m "Which slot are you loading? "
 if %errorlevel% equ 1 (
     set selectedSlot=1
@@ -1843,6 +2026,8 @@ if exist UserDatas/stats/slot%selectedSlot%/inUse.fdata (
     set /p mrbeastticket=
     set /p fopsoda=
     set /p tag=
+    set /p gun=
+    set /p hat=
 )< UserDatas/stats/slot%selectedSlot%/data.fdata
     (
         set /p bestscore=
@@ -1858,14 +2043,15 @@ if exist UserDatas/stats/slot%selectedSlot%/inUse.fdata (
     goto welcome
 ) else (
     cls
+    color c0
     echo This slot has no saved data.
     pause
     goto startoptions
 )
 ::Welcome message!!
 :welcome
-if %gamemodeS% equ 2 (
-    goto hardrabf (
+if %gamemode% equ 2 (
+    go to hardrabf (
 set health=%health%
 set fhunger=%fhunger%
 set fsanity=%fsanity%
@@ -1885,12 +2071,12 @@ set bestscore=%bestscore%
 set selectedSlot=%selectedSlot%
     )
 )
+color 0F
 cls
-echo        Welcome
-echo          to
+echo       Welcome to
 echo Raise a batched Floppa!
 echo I hope you enjoy the game!
-echo -----------------------
+echo.
 echo Floppa hunger = %fhunger%
 echo Floppa sanity = %fsanity%
 echo Floppa age = %fage%
@@ -1899,16 +2085,18 @@ echo Floppa name = %fname%
 echo Your money = %money%$
 echo Score = %score%
 echo Best score = %bestscore%
-echo -----------------------
+echo.
 echo These are the game stats
 
-pause
+echo Press any key to continue
+        pause >nul
 goto game
 
 ::Game related stuff
 :game
 SETLOCAL DisableDelayedExpansion
 set /a rnd1=%random% %%100
+set /a rnd2=%random% %%5
 cls
 if %factions%==10 (
    set /a fage=%fage% + 1
@@ -1924,14 +2112,6 @@ if %fhunger% GTR 100 (
 )
 if %fsanity% GTR 100 (
    set fsanity=100
-)
-if %fhunger% LSS 1 (
-    set currentDM=%dstarve%
-    goto gvsave1
-)
-if %health% LSS 1 (
-    set currentDM=%dhealth1%
-    goto gvsave1
 )
 if %fsanity% LSS 20 (
    set /a hunger=%hunger% - 10
@@ -1956,23 +2136,35 @@ if %fsanity% LEQ 0 (
 )
 if %health% LEQ 0 (
     set health=0
+    set currentDM=%dhealth1%
+    goto gvsave1
 )
 if %fhunger% LEQ 0 (
     set fhunger=0
+    set currentDM=%dstarve%
+    goto gvsave1
+)
+if %hat% equ 1 (
+    if %rnd2% equ 3 (
+         set /a money=%money% + 5
+         echo %fname%'s dripness gave you 5 more money.
+         echo My money is now %money%$
+         echo.
+    )
 )
 set /a score=%fhunger% + %fsanity% * %fage% + %money% / 3
+color 0F
 echo  H=%fhunger% S=%fsanity% A=%fage% $=%money%
-echo -----------------------
+echo.
 echo 1) Pet
 echo 2) Full bowl
-echo 3) Buy something
+echo 3) Item shop
 echo 4) Items
-echo 5) Save game
+echo 5) Save game (-1 Health)
 echo 6) Go to main menu
-echo -----------------------
+echo.
 echo Health=%health%
 echo Score=%score%
-echo (Normal Mode)
 echo.
 
 choice /c 123456 /m "What do you want to do?"
@@ -1984,7 +2176,7 @@ if %errorlevel% equ 2 (
     goto fullbowl
 )
 if %errorlevel% equ 3 (
-    goto shop
+    goto shopC0
 )
 if %errorlevel% equ 4 (
     goto items
@@ -2011,7 +2203,8 @@ set /a fsanity=%fsanity% + %rndb%
 echo My money is now %money%$
 echo %fname%'s sanity is now %fsanity%
 if %rnda%==0 (
-    pause
+    echo Press any key to continue
+        pause >nul
 goto save
 )
 if %rnda%==1 (
@@ -2025,10 +2218,12 @@ if %rnda%==2 (
     echo [!] %fname%'s sanity has decreased by %rndd%
 )
 
-pause
+echo Press any key to continue
+        pause >nul
 goto save
 
-pause
+echo Press any key to continue
+        pause >nul
 set /a factions=%factions% + 1
 goto save
 
@@ -2039,22 +2234,24 @@ set /a rnda=%random% %%3
 set /a rndb=%random% %%9
 set /a rndc=%random% %%10
 if %playerhasfood%==0 (
-   echo [!]You don't have food to full the bowl
+   echo You don't have food to full the bowl
    if %rnda%==0 (
-pause
+echo Press any key to continue
+        pause >nul
 goto save
 )
 if %rnda%==1 (
     set /a fhunger=%fhunger% - %rndb%
-    echo [!] %fname%'s hunger has decreased %rndb%
+    echo [I] %fname%'s hunger has decreased %rndb%
 )
 if %rnda%==2 (
     set /a fhunger=%fhunger% - %rndb%
-    echo [!] %fname%'s hunger has decreased by %rndb%
+    echo [I] %fname%'s hunger has decreased by %rndb%
     set /a fsanity=%fsanity% - %rndc%
-    echo [!] %fname%'s sanity has decreased by %rndc%
+    echo [I] %fname%'s sanity has decreased by %rndc%
 )
-   pause
+   echo Press any key to continue
+        pause >nul
    goto save
 )
 if %playerhasfood%==1 (
@@ -2062,204 +2259,376 @@ if %playerhasfood%==1 (
    echo and he ate it... %fname% recovered %rnd1% hunger
    set /a fhunger=%fhunger% + %rnd1%
    set playerhasfood=0
-   pause
+   echo Press any key to continue
+        pause >nul
    set /a factions=%factions% + 1
    goto save
 )
 
 :item
 cls
+color d0
 
 ::Shop related stuff here !!
-:shop
+:shopC0
 cls
+color 1F
 set product=None
-echo                   Shop
-echo --------------------------------------------
-echo 1) Return
-echo 2) Food (47$)
-echo 3) Sanity pills (230$)
-echo 4) Milk (87$)
-echo 5) Birthday cake (673$)
-echo 6) Fop Soda (30$)
-echo 7) Tag (500$)
-echo --------------------------------------------
-echo (Once you've selected something 
-echo it will buy automatically
-echo without any confirmation screen,
-echo if you have the required
-echo money, obviously)
+echo Miscellaneous Shop
+echo *=-------------------=*
+echo N) Next shop category
+echo R) Return
+echo 1) Food (47$)
+echo 2) Sanity pills (230$)
+echo 3) Milk (87$)
+echo 4) Birthday cake (673$)
+echo 5) Fop Soda (30$)
+echo 6) Tag (500$)
+echo *=-------------------=*
 echo.
-choice /c 1234567 /m "What do you want buy? "
-if %errorlevel% equ 1 (
+set /p playerInput="What do you want to buy? "
+if "%playerInput%"=="N" (
+    goto shopC1
+)
+
+if "%playerInput%"=="R" (
     goto game
 )
+if "%playerInput%"=="n" (
+    goto shopC1
+)
+
+if "%playerInput%"=="r" (
+    goto game
+)
+
 ::Food
-if %errorlevel% equ 2 (
+if %playerInput% equ 1 (
     if %playerhasfood%==1 (
         cls
-        echo [!]You already have food.
-        pause
-        goto shop
+        color 4f
+        echo You already have food.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %playerhasfood%==0 (
         if %money% GEQ 47 (
         cls
+        color a0
         echo You bought the item "Food", now you can
         echo fill %fname%'s bowl!
         set playerhasfood=1
         set /a money=%money% - 47
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %money% LSS 47 (
         cls
         echo You don't have enough money
         echo to buy the item "Food"!
-        pause
-        goto shop
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
         
 )
 ::Sanity pills
-if %errorlevel% equ 3 (
+if %playerInput% equ 2 (
     if %sanityPills%==1 (
         cls
-        echo [!]You already have Sanity pills.
-        pause
-        goto shop
+        color 4f
+        echo You already have Sanity pills.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %sanityPills%==0 (
         if %money% GEQ 230 (
         cls
+        color a0
         echo You bought the item "Sanity pills", now you can
         echo give them to %fname% to increase his sanity
         set sanityPills=1
         set /a money=%money% - 230
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %money% LSS 230 (
         cls
         echo You don't have enough money
         echo to buy the item "Sanity pills"!
-        pause
-        goto shop
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
 ::Milk
-if %errorlevel% equ 4 (
+if %playerInput% equ 3 (
     if %milk%==1 (
         cls
-        echo [!]You already have Milk.
-        pause
-        goto shop
+        color 4f
+        echo You already have Milk.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %milk%==0 (
         if %money% GEQ 87 (
         cls
+        color a0
         echo You bought the item "Milk", this works like Food
         echo but it can make %fname% to recover up to 60
         echo hunger instead of 30!
         set milk=1
         set /a money=%money% - 87
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %money% LSS 87 (
         cls
         echo You don't have enough money
         echo to buy the item "Milk"!
-        pause
-        goto shop
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
 ::Birthday cake
-if %errorlevel% equ 5 (
+if %playerInput% equ 4 (
     if %birthdayCake%==1 (
         cls
-        echo [!]You already have a Birthday cake.
-        pause
-        goto shop
+        color 4f
+        echo You already have a Birthday cake.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %birthdayCake%==0 (
         if %money% GEQ 673 (
         cls
+        color a0
         echo You bought the "Birthday cake", this will make
         echo %fname% age 2 years, it also will be able
         echo to recover 67 hunger.
         set birthdayCake=1
         set /a money=%money% - 673
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %money% LSS 673 (
         cls
         echo You don't have enough money
         echo to buy the "Birthday cake"!
-        pause
-        goto shop
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
 ::Fop soda
-if %errorlevel% equ 6 (
+if %playerInput% equ 5 (
     if %fopsoda%==1 (
         cls
-        echo [!]You already have a Fop Soda.
-        pause
-        goto shop
+        color 4f
+        echo You already have a Fop Soda.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %fopsoda%==0 (
         if %money% GEQ 30 (
         cls
+        color a0
         echo You bought the "Fop Soda", this will heal
         echo            %fname% by 5
         set fopsoda=1
         set /a money=%money% - 30
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %money% LSS 30 (
         cls
         echo You don't have enough money
         echo to buy the "Fop Soda"!
-        pause
-        goto shop
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
 ::Tag
-if %errorlevel% equ 7 (
+if %playerInput% equ 6 (
     if %tag%==1 (
         cls
-        echo [!]You already have a Tag.
-        pause
-        goto shop
+        color 4f
+        echo You already have a Tag.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %tag%==0 (
         if %money% GEQ 500 (
         cls
+        color a0
         echo You bought the "Tag", now you can
         echo rename %fname% to whatever you want!
         set tag=1
         set /a money=%money% - 500
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %money% LSS 500 (
         cls
         echo You don't have enough money
         echo to buy the "Tag"!
-        pause
-        goto shop
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
-goto shop
+goto shopC0
+
+::Shop category 1, WEAPONS
+:shopC1
+cls
+color 5F
+set product=None
+echo Weapons Shop
+echo *=-------------------=*
+echo N) Next page
+echo R) Return
+echo 1) Gun (200$)
+echo *=-------------------=*
+echo.
+set /p playerInput="What do you want to buy? "
+
+if "%playerInput%"=="N" (
+    goto shopC2
+)
+
+if "%playerInput%"=="R" (
+    goto game
+)
+
+if "%playerInput%"=="n" (
+    goto shopC2
+)
+
+if "%playerInput%"=="r" (
+    goto game
+)
+
+::Gun
+if %playerInput% equ 1 (
+    if %gun%==1 (
+        cls
+        color 4f
+        echo You already have a Gun.
+        echo Press any key to continue
+        pause >nul
+        goto shopC1
+    )
+    if %gun%==0 (
+        if %money% GEQ 200 (
+        cls
+        color a0
+        echo You bought the "Gun", now %fname%
+        echo can defend himself
+        set gun=1
+        set /a money=%money% - 200
+        echo Press any key to continue
+        pause >nul
+        goto save
+    )
+    if %money% LSS 200 (
+        cls
+        echo You don't have enough money
+        echo to buy the "Gun"!
+        echo Press any key to continue
+        pause >nul
+        goto shopC1
+    )
+    )
+)
+
+goto shopC1
+
+::Shop category 2, FAZBOOK MERKETPLEZ
+:shopC2
+cls
+color 70
+set product=None
+echo Fazbook Merketplez
+echo *=-------------------=*
+echo N) Next page
+echo R) Return
+echo 1) Hat (200$)
+echo *=-------------------=*
+echo.
+set /p playerInput="What do you want to buy? "
+
+if "%playerInput%"=="N" (
+    goto shopC0
+)
+
+if "%playerInput%"=="R" (
+    goto game
+)
+
+if "%playerInput%"=="n" (
+    goto shopC0
+)
+
+if "%playerInput%"=="r" (
+    goto game
+)
+
+::Hat
+if %playerInput% equ 1 (
+    if %hat%==1 (
+        cls
+        color 4f
+        echo You already have a Hat.
+        echo Press any key to continue
+        pause >nul
+        goto shopC2
+    )
+    if %hat%==0 (
+        if %money% GEQ 200 (
+        cls
+        color a0
+        echo You bought the "Hat", now %fname%
+        echo can have the drip :drip:
+        set hat=1
+        set /a money=%money% - 200
+        echo Press any key to continue
+        pause >nul
+        goto save
+    )
+    if %money% LSS 200 (
+        cls
+        echo You don't have enough money
+        echo to buy the "Hat"!
+        echo Press any key to continue
+        pause >nul
+        goto shopC2
+    )
+    )
+)
+
+goto shopC2
+
 
 ::Items select menu
 
@@ -2268,7 +2637,7 @@ set /a rndBeast=%random% %%1500
 set /a rnd2=%random% %%30
 cls
 echo        Items
-echo -----------------------
+echo.
 echo 1) Return
 echo 2) Sanity pills
 echo 3) Milk
@@ -2276,7 +2645,7 @@ echo 4) Birthday Cake
 echo 5) Mr.Beast event ticket
 echo 6) Fop Soda
 echo 7) Tag
-echo -----------------------
+echo.
 echo        Stats
 echo  H=%fhunger% S=%fsanity% A=%fage% $=%money%
 echo       Health=%health%
@@ -2294,14 +2663,17 @@ if %errorlevel% equ 2 (
         echo "Sanity pills" and he ate them,
         echo He recovered 58 of his sanity!
         set /a fsanity=%fsanity% + 58
+        set /a factions=%factions% + 1
         set sanityPills=0
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %sanityPills%==0 (
         cls
         echo You don't have any "Sanity Pills"!
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
@@ -2313,15 +2685,18 @@ if %errorlevel% equ 3 (
         echo and he drank it... %fname%
         echo recovered %rnd2% hunger
         set /a fhunger=%fhunger% + %rnd2%
+        set /a factions=%factions% + 1
         set milk=0
-        pause
+        echo Press any key to continue
+        pause >nul
         set /a factions=%factions% + 1
         goto save
     )
     if %milk%==0 (
         cls
         echo You don't have "Milk"!
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
@@ -2335,15 +2710,18 @@ if %errorlevel% equ 4 (
         echo age 2 years, an also made him to 
         echo recover 67 hunger!
         set /a fhunger=%fhunger% + 67
+        set /a factions=%factions% + 1
         set birthdayCake=0
-        pause
+        echo Press any key to continue
+        pause >nul
         set /a fage=%fage% + 2
         goto save
     )
     if %birthdayCake%==0 (
         cls
         echo You don't have a "Birthday cake"!
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
@@ -2354,13 +2732,16 @@ if %errorlevel% equ 5 (
         echo You sent %fname% to a Mr.Beast event,
         echo and he won %rndBeast%$, got %rndBeast%$
         set /a money=%money% + %rndBeast%
-        pause
+        set /a factions=%factions% + 1
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %mrbeastticket%==0 (
         cls
         echo You don't have a Ticket for the Mr.Beast event
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
@@ -2372,14 +2753,17 @@ if %errorlevel% equ 6 (
         echo and he drank it, %fname% healed
         echo            5 health
         set /a health=%health% + 5
+        set /a factions=%factions% + 1
         set fopsoda=0
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %fopsoda%==0 (
         cls
         echo You don't have a Fop Soda
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
@@ -2392,7 +2776,8 @@ if %errorlevel% equ 7 (
     if %tag%==0 (
         cls
         echo You don't have a Tag
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
@@ -2401,13 +2786,14 @@ if %errorlevel% equ 7 (
         echo You decided to rename your Floppa
         echo by using the Tag, how do you want
         echo          to call him?
-        echo ----------------------------------
+        echo *=------------------------------=*
         echo Please don't use spaces or unicode
         echo characters or the game could crash
         echo.
         set /p nameInput="Your Floppa new name > "
         set fname=%nameInput%
-        pause
+        echo Press any key to continue
+        pause >nul
         cls
         if %fname%==Sissiogamer1 (
             echo Sissiogamer1, a pretty good dude.
@@ -2421,19 +2807,18 @@ if %errorlevel% equ 7 (
             echo Terra: HE'S TRYING TO KILL ME
             echo.
         )
-        if %fname%==SesatGuy (
-            echo SesatGuy: You.. Don't know how pain to modify this...
-            echo.
-        )
         echo You changed your Floppa name to
         echo %fname% !
         set tag=0
-        pause
+        set /a factions=%factions% + 1
+        echo Press any key to continue
+        pause >nul
         goto save
 
 ::Events
 :travBandits
 set /a damageBandits=%random% %%10
+color b0
 cls
 echo Someone knocked at your door,
 echo      Open the door?
@@ -2451,24 +2836,40 @@ if %errorlevel% equ 1 (
     echo You open the door...
     timeout /t 1 /nobreak > nul
     cls
-    echo [!] Some bandits entered into your house and
-    echo         and hurted %fname!
-    echo %fname% lost %damageBandits% health...
-    set /a health=%health% - %damageBandits%
-    echo.
-    pause
-    goto save
+    if %gun% equ 1 (
+        echo [I] Some bandits entered into your house, but
+        echo %fname% used the gun to fight with the bandits   
+        echo      The bandits left your house...
+        echo -1 Gun
+        echo.
+        set gun=0
+        echo Press any key to continue
+        pause >nul
+        goto save
+    )
+    if %gun% equ 0 (
+        echo [I] Some bandits entered into your house and
+        echo         and hurted %fname!
+        echo %fname% lost %damageBandits% health...
+        set /a health=%health% - %damageBandits%
+        echo.
+        echo Press any key to continue
+        pause >nul
+        goto save
+    )
 )
 if %errorlevel% equ 2 (
     cls
         echo You decided not opening the door, 
         echo whoever who was there decided to
         echo       go away in silent...
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
 )
 
 :travMrbtick
+color b0
 cls
 echo Someone knocked at your door,
 echo      Open the door?
@@ -2502,7 +2903,8 @@ if %errorlevel% equ 1 (
             echo  a Mr.Beast event and win up to 1500$
             set /a money=%money% - 700
             set mrbeastticket=1
-            pause
+            echo Press any key to continue
+        pause >nul
             goto save
         )
         if %money% LSS 700 (
@@ -2511,7 +2913,8 @@ if %errorlevel% equ 1 (
             echo have enough money to accept his offer,
             echo  then he leaves your house saying you
             echo            "Goodbye fella!"
-            pause
+            echo Press any key to continue
+        pause >nul
             goto save
         )
     
@@ -2522,7 +2925,8 @@ if %errorlevel% equ 1 (
         echo not interested on it's offer, then
         echo  you ask him to leave your house,
         echo         and he proceeds
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
 
@@ -2532,11 +2936,13 @@ if %errorlevel% equ 2 (
         echo You decided not opening the door, 
         echo whoever who was there decided to
         echo       go away in silent...
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
 )
 ::Birthday cake traveller offer
 :travcake
+color b0
 cls
 echo Someone knocked at your door,
 echo Open the door?
@@ -2569,7 +2975,8 @@ if %errorlevel% equ 1 (
             echo      and recover him 67 hunger
             set /a money=%money% - 437
             set birthdayCake=1
-            pause
+            echo Press any key to continue
+        pause >nul
             goto save
         )
         if %money% LSS 437 (
@@ -2578,7 +2985,8 @@ if %errorlevel% equ 1 (
             echo have enough money to accept his offer,
             echo  then he leaves your house saying you
             echo            "Goodbye baka!"
-            pause
+            echo Press any key to continue
+        pause >nul
             goto save
         )
     
@@ -2589,7 +2997,8 @@ if %errorlevel% equ 1 (
         echo not interested on it's offer, then
         echo  you ask him to leave your house,
         echo         and he proceeds
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
 
@@ -2599,7 +3008,8 @@ if %errorlevel% equ 2 (
         echo You decided not opening the door, 
         echo whoever who was there decided to
         echo       go away in silent...
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
 )
 
@@ -2618,10 +3028,11 @@ if %score% GTR %bestscore% (
 ) else (
     echo.
 )
+color c0
 echo       GAME OVER!
 echo.
 echo %currentDM%
-echo -----------------------
+echo.
 echo        Stats:
 echo   Floppa age = %fage%
 echo  Floppa sanity = %fsanity%
@@ -2630,7 +3041,7 @@ echo  Floppa health = %health%
 echo Floppa name = %fname%
 echo     Score = %score%
 echo  Best score = %bestscore%
-echo -----------------------
+echo.
 echo 1) Go to main menu
 echo 2) Start a new game 
 echo.
@@ -2640,7 +3051,7 @@ if %errorlevel% equ 1 (
     goto savebc
 )
 if %errorlevel% equ 2 (
-    set savebcdir=newgames
+    set savebcdir=newgame
     goto savebc
 )
 
@@ -2655,22 +3066,6 @@ goto %savebcdir%
 
 :save
 cls
-set health=%health%
-set fhunger=%fhunger%
-set fsanity=%fsanity%
-set fage=%fage%
-set factions=%factions%
-set fname=%fname%
-set money=%money%
-set score=%score%
-set currentDM=%currentDM%
-set playerhasfood=%playerhasfood%
-set sanityPills=%sanityPills%
-set milk=%milk%
-set birthdayCake=%birthdayCake%
-set mrbeastticket=%mrbeastticket%
-set fopsoda=%fopsoda%
-set tag=%tag%
 
 (
 echo %health%
@@ -2689,6 +3084,8 @@ echo %birthdayCake%
 echo %mrbeastticket%
 echo %fopsoda%
 echo %tag%
+echo %gun%
+echo %hat%
 )> UserDatas/stats/slot%selectedSlot%/data.fdata
 ::Best score save
 set bestscore=%bestscore%
@@ -2700,23 +3097,7 @@ goto game
 
 :save2
 cls
-set health=%health%
-set fhunger=%fhunger%
-set fsanity=%fsanity%
-set fage=%fage%
-set factions=%factions%
-set fname=%fname%
-set money=%money%
-set score=%score%
-set currentDM=%currentDM%
-set playerhasfood=%playerhasfood%
-set sanityPills=%sanityPills%
-set milk=%milk%
-set birthdayCake=%birthdayCake%
-set mrbeastticket=%mrbeastticket%
-set fopsoda=%fopsoda%
-set tag=%tag%
-
+set /a health=%health% - 1
 (
 echo %health%
 echo %fhunger%
@@ -2734,36 +3115,24 @@ echo %birthdayCake%
 echo %mrbeastticket%
 echo %fopsoda%
 echo %tag%
+echo %gun%
+echo %hat%
 )> UserDatas/stats/slot%selectedSlot%/data.fdata
 ::Best score save
 set bestscore=%bestscore%
 (
 echo %bestscore%
 )> UserDatas/stats/bestSc.fdata
+color 2f
 
 echo The game was saved correctly!
 
-pause
+echo Press any key to continue
+        pause >nul
 goto game
 
 :gvsave1
 cls
-set health=%health%
-set fhunger=%fhunger%
-set fsanity=%fsanity%
-set fage=%fage%
-set factions=%factions%
-set fname=%fname%
-set money=%money%
-set score=%score%
-set currentDM=%currentDM%
-set playerhasfood=%playerhasfood%
-set sanityPills=%sanityPills%
-set milk=%milk%
-set birthdayCake=%birthdayCake%
-set mrbeastticket=%mrbeastticket%
-set fopsoda=%fopsoda%
-set tag=%tag%
 
 (
 echo %health%
@@ -2782,6 +3151,8 @@ echo %birthdayCake%
 echo %mrbeastticket%
 echo %fopsoda%
 echo %tag%
+echo %gun%
+echo %hat%
 )> UserDatas/stats/slot%selectedSlot%/data.fdata
 ::Best score save
 set bestscore=%bestscore%
@@ -2791,15 +3162,15 @@ echo %bestscore%
 goto gameover
 
 
+
+
 :hardrabf
 title -Hard Raise A Batched Floppa- KBytesOS
 cls
 echo    Welcome back to         
-echo Raise a batched Floppa
-echo       HARD MODE
-echo This is a more challenging
-echo mode than the normal one
-echo -----------------------
+echo Raise a batched Floppa HARD MODE
+echo This is a more challenging mode
+echo.
 echo Floppa hunger = %fhunger%
 echo Floppa sanity = %fsanity%
 echo Floppa age = %fage%
@@ -2808,17 +3179,18 @@ echo Floppa name=%fname%
 echo Your money = %money%$
 echo Score = %score%
 echo Best score = %bestscore%
-echo -----------------------
+echo.
 echo These are the game stats,
 echo enjoy taking care of your
 echo Floppa on HARD MODE!
-
-pause
-goto thegame
+echo Press any key to continue
+        pause >nul
+goto game
 
 ::Game related stuff
-:thegame
+:game
 set /a rnd1=%random% %%100
+set /a rnd2=%random% %%10
 cls
 if %factions%==10 (
    set /a fage=%fage% + 1
@@ -2835,14 +3207,6 @@ if %fhunger% GTR 100 (
 if %fsanity% GTR 100 (
    set fsanity=100
 )
-if %fhunger% LSS 1 (
-    set currentDM=%dstarve%
-    goto gvsaves1
-)
-if %health% LSS 1 (
-    set currentDM=%dhealth1%
-    goto gvsaves1
-)
 if %fsanity% LSS 60 (
    set /a hunger=%hunger% - 20
    set /a health=%health% - 10
@@ -2853,60 +3217,72 @@ if %fsanity% LSS 60 (
 
 
 if %rnd1%==86 (
-    goto travcakes
+    goto travcake
 )
 if %rnd1%==67 (
-    goto travMrbticks
+    goto travMrbtick
 )
 if %rnd1%==35 (
-    goto travBanditss
+    goto travBandits
 )
 if %fsanity% LEQ 0 (
     set fsanity=0
 )
 if %health% LEQ 0 (
     set health=0
+    set currentDM=%dhealth1%
+    goto gvsave1
 )
 if %fhunger% LEQ 0 (
     set fhunger=0
+    set currentDM=%dstarve%
+    goto gvsave1
+)
+if %hat% equ 1 (
+    if %rnd2% equ 6 (
+         set /a money=%money% + 15
+         echo %fname%'s dripness gave you 15 more money.
+         echo My money is now %money%$
+         echo.
+    )
 )
 set /a score=%fhunger% + %fsanity% * %fage% + %money% / 3
+color 0F
 echo  H=%fhunger% S=%fsanity% A=%fage% $=%money%
-echo -----------------------
+echo.
 echo 1) Pet
 echo 2) Full bowl
-echo 3) Buy something
+echo 3) Item shop
 echo 4) Items
-echo 5) Save game
+echo 5) Save game (-3 Health)
 echo 6) Go to main menu
-echo -----------------------
+echo.
 echo Health=%health%
 echo Score=%score%
-echo (Hard Mode)
 echo.
 
 choice /c 123456 /m "What do you want to do?"
 
 if %errorlevel% equ 1 (
-    goto pets
+    goto pet
 )
 if %errorlevel% equ 2 (
-    goto fullbowls
+    goto fullbowl
 )
 if %errorlevel% equ 3 (
-    goto shops
+    goto shopC0
 )
 if %errorlevel% equ 4 (
-    goto itemss
+    goto items
 )
 if %errorlevel% equ 5 (
-    goto saves2
+    goto save2
 )
 if %errorlevel% equ 6 (
     goto rabf
 )
 
-:pets
+:pet
 cls
 set /a rnd=%random% %%30
 set /a rnda=%random% %%3
@@ -2921,8 +3297,9 @@ set /a fsanity=%fsanity% + %rndb%
 echo My money is now %money%$
 echo %fname%'s sanity is now %fsanity%
 if %rnda%==0 (
-    pause
-goto saves
+    echo Press any key to continue
+        pause >nul
+goto save
 )
 if %rnda%==1 (
     set /a fhunger=%fhunger% - %rndb%
@@ -2935,14 +3312,11 @@ if %rnda%==2 (
     echo [!] %fname%'s sanity has decreased by %rndd%
 )
 
-pause
-goto saves
-
-pause
-set /a factions=%factions% + 1
+echo Press any key to continue
+        pause >nul
 goto save
 
-:fullbowls
+:fullbowl
 cls
 set /a rnd1=%random% %%30
 set /a rnda=%random% %%3
@@ -2951,8 +3325,9 @@ set /a rndc=%random% %%27
 if %playerhasfood%==0 (
    echo [!] You don't have food to full the bowl
    if %rnda%==0 (
-pause
-goto saves
+echo Press any key to continue
+        pause >nul
+goto save
 )
 if %rnda%==1 (
     set /a fhunger=%fhunger% - %rndb%
@@ -2964,8 +3339,9 @@ if %rnda%==2 (
     set /a fsanity=%fsanity% - %rndc%
     echo [!] %fname%'s sanity has decreased by %rndc%
 )
-   pause
-   goto saves
+   echo Press any key to continue
+        pause >nul
+   goto save
 )
 if %playerhasfood%==1 (
    echo You filled %fname%'s bowl
@@ -2974,211 +3350,381 @@ if %playerhasfood%==1 (
    set playerhasfood=0
    pause
    set /a factions=%factions% + 1
-   goto saves
+   goto save
 )
 
-:items
+:item
 cls
+color d0
 
 ::Shop related stuff here !!
-:shops
+:shopC0
 cls
+color 1F
 set product=None
-echo                   Shop
-echo --------------------------------------------
-echo 1) Return
-echo 2) Food (57$)
-echo 3) Sanity pills (310$)
-echo 4) Milk (97$)
-echo 5) Birthday cake (700$)
-echo 6) Fop Soda (30$)
-echo 7) Tag (534$)
-echo --------------------------------------------
-echo (Once you've selected something 
-echo it will buy automatically
-echo without any confirmation screen,
-echo if you have the required
-echo money, obviously)
+echo Miscellaneous Shop
+echo *=-------------------=*
+echo N) Next shop category
+echo R) Return
+echo 1) Food (64$)
+echo 2) Sanity pills (300$)
+echo 3) Milk (97$)
+echo 4) Birthday cake (713$)
+echo 5) Fop Soda (43$)
+echo 6) Tag (600$)
+echo *=-------------------=*
 echo.
-choice /c 1234567 /m "What do you want buy? "
-if %errorlevel% equ 1 (
-    goto games
+set /p playerInput="What do you want to buy? "
+if "%playerInput%"=="N" (
+    goto shopC1
 )
+
+if "%playerInput%"=="R" (
+    goto game
+)
+if "%playerInput%"=="n" (
+    goto shopC1
+)
+
+if "%playerInput%"=="r" (
+    goto game
+)
+
 ::Food
-if %errorlevel% equ 2 (
+if %playerInput% equ 1 (
     if %playerhasfood%==1 (
         cls
-        echo [!] You already have food.
-        pause
-        goto shops
+        color 4f
+        echo You already have food.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %playerhasfood%==0 (
-        if %money% GEQ 57 (
+        if %money% GEQ 64 (
         cls
+        color a0
         echo You bought the item "Food", now you can
-        echo fill %fname% bowl!
+        echo fill %fname%'s bowl!
         set playerhasfood=1
-        set /a money=%money% - 57
-        pause
-        goto saves
+        set /a money=%money% - 64
+        echo Press any key to continue
+        pause >nul
+        goto save
     )
-    if %money% LSS 57 (
+    if %money% LSS 64 (
         cls
         echo You don't have enough money
         echo to buy the item "Food"!
-        pause
-        goto shops
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
         
 )
 ::Sanity pills
-if %errorlevel% equ 3 (
+if %playerInput% equ 2 (
     if %sanityPills%==1 (
         cls
-        echo [!] You already have Sanity pills.
-        pause
-        goto shops
+        color 4f
+        echo You already have Sanity pills.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %sanityPills%==0 (
-        if %money% GEQ 310 (
+        if %money% GEQ 300 (
         cls
+        color a0
         echo You bought the item "Sanity pills", now you can
         echo give them to %fname% to increase his sanity
         set sanityPills=1
-        set /a money=%money% - 310
-        pause
-        goto saves
+        set /a money=%money% - 300
+        echo Press any key to continue
+        pause >nul
+        goto save
     )
-    if %money% LSS 310 (
+    if %money% LSS 300 (
         cls
         echo You don't have enough money
         echo to buy the item "Sanity pills"!
-        pause
-        goto shops
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
 ::Milk
-if %errorlevel% equ 4 (
+if %playerInput% equ 3 (
     if %milk%==1 (
         cls
-        echo [!] You already have Milk.
-        pause
-        goto shops
+        color 4f
+        echo You already have Milk.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %milk%==0 (
         if %money% GEQ 97 (
         cls
+        color a0
         echo You bought the item "Milk", this works like Food
         echo but it can make %fname% to recover up to 60
         echo hunger instead of 30!
         set milk=1
         set /a money=%money% - 97
-        pause
-        goto saves
+        echo Press any key to continue
+        pause >nul
+        goto save
     )
     if %money% LSS 97 (
         cls
         echo You don't have enough money
         echo to buy the item "Milk"!
-        pause
-        goto shops
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
 ::Birthday cake
-if %errorlevel% equ 5 (
+if %playerInput% equ 4 (
     if %birthdayCake%==1 (
         cls
-        echo [!] You already have a Birthday cake.
-        pause
-        goto shops
+        color 4f
+        echo You already have a Birthday cake.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %birthdayCake%==0 (
-        if %money% GEQ 700 (
+        if %money% GEQ 713 (
         cls
+        color a0
         echo You bought the "Birthday cake", this will make
         echo %fname% age 2 years, it also will be able
         echo to recover 67 hunger.
         set birthdayCake=1
-        set /a money=%money% - 700
-        pause
-        goto saves
+        set /a money=%money% - 713
+        echo Press any key to continue
+        pause >nul
+        goto save
     )
-    if %money% LSS 700 (
+    if %money% LSS 713 (
         cls
         echo You don't have enough money
         echo to buy the "Birthday cake"!
-        pause
-        goto shops
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
-::Fop Soda
-if %errorlevel% equ 6 (
+::Fop soda
+if %playerInput% equ 5 (
     if %fopsoda%==1 (
         cls
-        echo [!] You already have a Fop Soda.
-        pause
-        goto shops
+        color 4f
+        echo You already have a Fop Soda.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
-    if %birthdayCake%==0 (
-        if %money% GEQ 30 (
+    if %fopsoda%==0 (
+        if %money% GEQ 43 (
         cls
+        color a0
         echo You bought the "Fop Soda", this will heal
-        echo             %fname% by 5
+        echo            %fname% by 5
         set fopsoda=1
-        set /a money=%money% - 30
-        pause
-        goto saves
+        set /a money=%money% - 43
+        echo Press any key to continue
+        pause >nul
+        goto save
     )
-    if %money% LSS 30 (
+    if %money% LSS 43 (
         cls
         echo You don't have enough money
         echo to buy the "Fop Soda"!
-        pause
-        goto shops
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
 ::Tag
-if %errorlevel% equ 7 (
+if %playerInput% equ 6 (
     if %tag%==1 (
         cls
-        echo [!]You already have a Tag.
-        pause
-        goto shops
+        color 4f
+        echo You already have a Tag.
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     if %tag%==0 (
-        if %money% GEQ 534 (
+        if %money% GEQ 600 (
         cls
+        color a0
         echo You bought the "Tag", now you can
         echo rename %fname% to whatever you want!
         set tag=1
-        set /a money=%money% - 534
-        pause
-        goto saves
+        set /a money=%money% - 600
+        echo Press any key to continue
+        pause >nul
+        goto save
     )
-    if %money% LSS 534 (
+    if %money% LSS 600 (
         cls
         echo You don't have enough money
         echo to buy the "Tag"!
-        pause
-        goto shops
+        echo Press any key to continue
+        pause >nul
+        goto shopC0
     )
     )
 )
-goto shops
+goto shopC0
+
+::Shop category 1, WEAPONS
+:shopC1
+cls
+color 5F
+set product=None
+echo Weapons Shop
+echo *=-------------------=*
+echo N) Next page
+echo R) Return
+echo 1) Gun (235$)
+echo *=-------------------=*
+echo.
+set /p playerInput="What do you want to buy? "
+
+if "%playerInput%"=="N" (
+    goto shopC2
+)
+
+if "%playerInput%"=="R" (
+    goto game
+)
+
+if "%playerInput%"=="n" (
+    goto shopC2
+)
+
+if "%playerInput%"=="r" (
+    goto game
+)
+
+::Gun
+if %playerInput% equ 1 (
+    if %gun%==1 (
+        cls
+        color 4f
+        echo You already have a Gun.
+        echo Press any key to continue
+        pause >nul
+        goto shopC1
+    )
+    if %gun%==0 (
+        if %money% GEQ 235 (
+        cls
+        color a0
+        echo You bought the "Gun", now %fname%
+        echo can defend himself
+        set gun=1
+        set /a money=%money% - 235
+        echo Press any key to continue
+        pause >nul
+        goto save
+    )
+    if %money% LSS 235 (
+        cls
+        echo You don't have enough money
+        echo to buy the "Gun"!
+        echo Press any key to continue
+        pause >nul
+        goto shopC1
+    )
+    )
+)
+
+goto shopC1
+
+::Shop category 2, FAZBOOK MERKETPLEZ
+:shopC2
+cls
+color 5F
+set product=None
+echo Fazbook Merketplez
+echo *=-------------------=*
+echo N) Next page
+echo R) Return
+echo 1) Hat (300$)
+echo *=-------------------=*
+echo.
+set /p playerInput="What do you want to buy? "
+
+if "%playerInput%"=="N" (
+    goto shopC0
+)
+
+if "%playerInput%"=="R" (
+    goto game
+)
+
+if "%playerInput%"=="n" (
+    goto shopC0
+)
+
+if "%playerInput%"=="r" (
+    goto game
+)
+
+::Hat
+if %playerInput% equ 1 (
+    if %hat%==1 (
+        cls
+        color 4f
+        echo You already have a Hat.
+        echo Press any key to continue
+        pause >nul
+        goto shopC2
+    )
+    if %hat%==0 (
+        if %money% GEQ 300 (
+        cls
+        color a0
+        echo You bought the "Hat", now %fname%
+        echo can have the drip :drip:
+        set hat=1
+        set /a money=%money% - 300
+        echo Press any key to continue
+        pause >nul
+        goto save
+    )
+    if %money% LSS 300 (
+        cls
+        echo You don't have enough money
+        echo to buy the "Hat"!
+        echo Press any key to continue
+        pause >nul
+        goto shopC2
+    )
+    )
+)
+
+goto shopC2
 
 ::Items select menu
 
-:itemss
+:items
 set /a rndBeast=%random% %%1500
 set /a rnd2=%random% %%30
 cls
 echo        Items
-echo -----------------------
+echo.
 echo 1) Return
 echo 2) Sanity pills
 echo 3) Milk
@@ -3186,13 +3732,14 @@ echo 4) Birthday Cake
 echo 5) Mr.Beast event ticket
 echo 6) Fop Soda
 echo 7) Tag
-echo -----------------------
+echo 8) Hat
+echo.
 echo        Stats
 echo  H=%fhunger% S=%fsanity% A=%fage% $=%money%
 echo       Health=%health%
 echo.
 
-choice /c 1234567
+choice /c 12345678
 if %errorlevel% equ 1 (
     goto game
 )
@@ -3205,13 +3752,15 @@ if %errorlevel% equ 2 (
         echo He recovered 58 of his sanity!
         set /a fsanity=%fsanity% + 58
         set sanityPills=0
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %sanityPills%==0 (
         cls
         echo You don't have any "Sanity Pills"!
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
@@ -3224,14 +3773,16 @@ if %errorlevel% equ 3 (
         echo recovered %rnd2% hunger
         set /a fhunger=%fhunger% + %rnd2%
         set milk=0
-        pause
+        echo Press any key to continue
+        pause >nul
         set /a factions=%factions% + 1
         goto save
     )
     if %milk%==0 (
         cls
         echo You don't have "Milk"!
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
@@ -3246,14 +3797,16 @@ if %errorlevel% equ 4 (
         echo recover 67 hunger!
         set /a fhunger=%fhunger% + 67
         set birthdayCake=0
-        pause
+        echo Press any key to continue
+        pause >nul
         set /a fage=%fage% + 2
         goto save
     )
     if %birthdayCake%==0 (
         cls
         echo You don't have a "Birthday cake"!
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
@@ -3264,69 +3817,90 @@ if %errorlevel% equ 5 (
         echo You sent %fname% to a Mr.Beast event,
         echo and he won %rndBeast%$, got %rndBeast%$
         set /a money=%money% + %rndBeast%
-        pause
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %mrbeastticket%==0 (
         cls
         echo You don't have a Ticket for the Mr.Beast event
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
-::Fop Sodas
+::Fop Soda
 if %errorlevel% equ 6 (
     if %fopsoda%==1 (
         cls
         echo You gave %fname% the Fop Soda
-        echo and he drank it, Your Floppa healed
+        echo and he drank it, %fname% healed
         echo            5 health
         set /a health=%health% + 5
-        pause
+        set fopsoda=0
+        echo Press any key to continue
+        pause >nul
         goto save
     )
     if %fopsoda%==0 (
         cls
         echo You don't have a Fop Soda
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
+
 ::Tag (Rename item)
 if %errorlevel% equ 7 (
     if %tag%==1 (
-        goto nameTagFloppas
+        goto nameTagFloppa
     )
     if %tag%==0 (
         cls
         echo You don't have a Tag
-        pause
+        echo Press any key to continue
+        pause >nul
         goto items
     )
 )
-:nameTagFloppas
+:nameTagFloppa
         cls
         echo You decided to rename your Floppa
         echo by using the Tag, how do you want
         echo          to call him?
-        echo ----------------------------------
+        echo *=------------------------------=*
         echo Please don't use spaces or unicode
         echo characters or the game could crash
         echo.
         set /p nameInput="Your Floppa new name > "
         set fname=%nameInput%
-        pause
+        echo Press any key to continue
+        pause >nul
         cls
+        if %fname%==Sissiogamer1 (
+            echo Sissiogamer1, a pretty good dude.
+            echo.
+        )
+        if %fname%==GladfanIsHere (
+            echo GladfanIsHere, the creator of this game...
+            echo.
+        )
+        if %fname%==Terra (
+            echo Terra: HE'S TRYING TO KILL ME
+            echo.
+        )
         echo You changed your Floppa name to
         echo %fname% !
         set tag=0
-        pause
-        goto saves
-
+        echo Press any key to continue
+        pause >nul
+        goto save
 
 ::Events
-:travBanditss
-set /a damageBandits=%random% %%13
+:travBandits
+set /a damageBandits=%random% %%10
+color b0
 cls
 echo Someone knocked at your door,
 echo      Open the door?
@@ -3344,24 +3918,40 @@ if %errorlevel% equ 1 (
     echo You open the door...
     timeout /t 1 /nobreak > nul
     cls
-    echo [!] Some bandits entered into your house and
-    echo        and hurted %fname%!
-    echo %fname% lost %damageBandits% health...
-    set /a health=%health% - %damageBandits%
-    echo.
-    pause
-    goto saves
+    if %gun% equ 1 (
+        echo [I] Some bandits entered into your house, but
+        echo %fname% used the gun to fight with the bandits   
+        echo      The bandits left your house...
+        echo -1 Gun
+        echo.
+        set gun=0
+        echo Press any key to continue
+        pause >nul
+        goto save
+    )
+    if %gun% equ 0 (
+        echo [I] Some bandits entered into your house and
+        echo         and hurted %fname!
+        echo %fname% lost %damageBandits% health...
+        set /a health=%health% - %damageBandits%
+        echo.
+        echo Press any key to continue
+        pause >nul
+        goto save
+    )
 )
 if %errorlevel% equ 2 (
     cls
         echo You decided not opening the door, 
         echo whoever who was there decided to
         echo       go away in silent...
-        pause
-        goto saves
+        echo Press any key to continue
+        pause >nul
+        goto save
 )
 
-:travMrbticks
+:travMrbtick
+color b0
 cls
 echo Someone knocked at your door,
 echo      Open the door?
@@ -3394,9 +3984,11 @@ if %errorlevel% equ 1 (
             echo you can use it to make %fname% go to
             echo  a Mr.Beast event and win up to 1500$
             set /a money=%money% - 700
+            set /a factions=%factions% + 1
             set mrbeastticket=1
-            pause
-            goto saves
+            echo Press any key to continue
+        pause >nul
+            goto save
         )
         if %money% LSS 700 (
             cls
@@ -3404,8 +3996,9 @@ if %errorlevel% equ 1 (
             echo have enough money to accept his offer,
             echo  then he leaves your house saying you
             echo            "Goodbye fella!"
-            pause
-            goto saves
+            echo Press any key to continue
+        pause >nul
+            goto save
         )
     
     )
@@ -3415,8 +4008,9 @@ if %errorlevel% equ 1 (
         echo not interested on it's offer, then
         echo  you ask him to leave your house,
         echo         and he proceeds
-        pause
-        goto saves
+        echo Press any key to continue
+        pause >nul
+        goto save
     )
 
 )
@@ -3425,11 +4019,13 @@ if %errorlevel% equ 2 (
         echo You decided not opening the door, 
         echo whoever who was there decided to
         echo       go away in silent...
-        pause
-        goto saves
+        echo Press any key to continue
+        pause >nul
+        goto save
 )
 ::Birthday cake traveller offer
-:travcakes
+:travcake
+color b0
 cls
 echo Someone knocked at your door,
 echo Open the door?
@@ -3461,9 +4057,11 @@ if %errorlevel% equ 1 (
             echo   happy birthday two times in a row
             echo      and recover him 67 hunger
             set /a money=%money% - 437
+            set /a factions=%factions% +1
             set birthdayCake=1
-            pause
-            goto saves
+            echo Press any key to continue
+        pause >nul
+            goto save
         )
         if %money% LSS 437 (
             cls
@@ -3471,8 +4069,9 @@ if %errorlevel% equ 1 (
             echo have enough money to accept his offer,
             echo  then he leaves your house saying you
             echo            "Goodbye baka!"
-            pause
-            goto saves
+            echo Press any key to continue
+        pause >nul
+            goto save
         )
     
     )
@@ -3482,8 +4081,9 @@ if %errorlevel% equ 1 (
         echo not interested on it's offer, then
         echo  you ask him to leave your house,
         echo         and he proceeds
-        pause
-        goto saves
+        echo Press any key to continue
+        pause >nul
+        goto save
     )
 
 )
@@ -3492,12 +4092,13 @@ if %errorlevel% equ 2 (
         echo You decided not opening the door, 
         echo whoever who was there decided to
         echo       go away in silent...
-        pause
-        goto saves
+        echo Press any key to continue
+        pause >nul
+        goto save
 )
 
 ::Game over!
-:gameovers
+:gameover
 if %fsanity% LEQ 0 (
     set fsanity=0
 )
@@ -3511,10 +4112,11 @@ if %score% GTR %bestscore% (
 ) else (
     echo.
 )
+color c0
 echo       GAME OVER!
 echo.
 echo %currentDM%
-echo -----------------------
+echo.
 echo        Stats:
 echo   Floppa age = %fage%
 echo  Floppa sanity = %fsanity%
@@ -3522,79 +4124,24 @@ echo  Floppa hunger = %fhunger%
 echo  Floppa health = %health%
 echo     Score = %score%
 echo  Best score = %bestscore%
-echo -----------------------
+echo.
 echo 1) Go to main menu
 echo.
 choice /c 1
 if %errorlevel% equ 1 (
-    goto savesbc
+    goto savebc
 )
 
 ::Save system related stuff
-:savesbc
+:savebc
 set bestscore=%bestscore%
 (
     echo %bestscore%
 )> UserDatas/stats/bestSc.fdata
 goto rabf
 
-:saves
+:save
 cls
-set health=%health%
-set fhunger=%fhunger%
-set fsanity=%fsanity%
-set fage=%fage%
-set factions=%factions%
-set money=%money%
-set playerhasfood=%playerhasfood%
-set score=%score%
-set currentDM=%currentDM%
-set sanityPills=%sanityPills%
-set milk=%milk%
-set birthdayCake=%birthdayCake%
-set mrbeastticket=%mrbeastticket%
-set fopsoda=%fopsoda%
-
-(
-echo %health%
-echo %fhunger%
-echo %fsanity%
-echo %fage%
-echo %factions%
-echo %money%
-echo %playerhasfood%
-echo %score%
-echo %currentDM%
-echo %sanityPills%
-echo %milk%
-echo %birthdayCake%
-echo %mrbeastticket%
-echo %fopsoda%
-)> stats/slot%selectedSlot%/data.fdata
-::Best score save
-set bestscore=%bestscore%
-(
-echo %bestscore%
-)> UserDatas/stats/bestSc.fdata
-
-goto thegame
-
-:saves2
-cls
-set health=%health%
-set fhunger=%fhunger%
-set fsanity=%fsanity%
-set fage=%fage%
-set factions=%factions%
-set money=%money%
-set playerhasfood=%playerhasfood%
-set score=%score%
-set currentDM=%currentDM%
-set sanityPills=%sanityPills%
-set milk=%milk%
-set birthdayCake=%birthdayCake%
-set mrbeastticket=%mrbeastticket%
-set fopsoda=%fopsoda%
 
 (
 echo %health%
@@ -3618,27 +4165,42 @@ set bestscore=%bestscore%
 echo %bestscore%
 )> UserDatas/stats/bestSc.fdata
 
+goto game
+
+:save2
+cls
+set /a health=%health% - 3
+
+(
+echo %health%
+echo %fhunger%
+echo %fsanity%
+echo %fage%
+echo %factions%
+echo %money%
+echo %playerhasfood%
+echo %score%
+echo %currentDM%
+echo %sanityPills%
+echo %milk%
+echo %birthdayCake%
+echo %mrbeastticket%
+echo %fopsoda%
+)> UserDatas/stats/slot%selectedSlot%/data.fdata
+::Best score save
+set bestscore=%bestscore%
+(
+echo %bestscore%
+)> UserDatas/stats/bestSc.fdata
+
+color 2f
 echo The game was saved correctly!
 
 pause
-goto thegame
+goto game
 
-:gvsaves1
+:gvsave1
 cls
-set health=%health%
-set fhunger=%fhunger%
-set fsanity=%fsanity%
-set fage=%fage%
-set factions=%factions%
-set money=%money%
-set playerhasfood=%playerhasfood%
-set score=%score%
-set currentDM=%currentDM%
-set sanityPills=%sanityPills%
-set milk=%milk%
-set birthdayCake=%birthdayCake%
-set mrbeastticket=%mrbeastticket%
-set fopsoda=%fopsoda%
 
 (
 echo %health%
@@ -3661,4 +4223,196 @@ set bestscore=%bestscore%
 (
 echo %bestscore%
 )> UserDatas/stats/bestSc.fdata
-goto gameovers
+goto gameover
+
+:updates
+color F0 & title Updating a RABF slot...
+if %slotGamemode% equ 1 (
+   set slotGamemodeDisplay=Normal
+)
+
+if %slotGamemode% equ 2 (
+   set slotGamemodeDisplay=Hard
+)
+
+
+::The update menu that appears when update.bat is opened
+:updateMenu
+cls
+echo.
+echo Information about slot %selectedSlot%
+echo Slot version: v%slotVersion%
+echo Slot game mode: %slotGamemodeDisplay%
+echo.
+echo Press any key to update
+echo.
+pause >nul
+goto updateCheck
+
+::This will check the configData.fdata file first
+:updateCheck
+cls
+if "%slotVersion%"=="%version%" (
+   echo.
+   echo Sorry, but you can't update a slot that
+   echo is already up to date
+   echo.
+   echo Press any key to open RaBF
+   pause >nul
+   goto rabf
+   exit
+) else (
+   goto loadUpdate
+)
+
+::This will load the slot
+:loadUpdate
+echo Loading slot's data...
+echo Please wait a moment
+timeout /t 1 /nobreak > nul
+if "%slotVersion%"=="0.1.3" (
+(
+    set /p health=
+    set /p fhunger=
+    set /p fsanity=
+    set /p fage=
+    set /p factions=
+    set /p fname=
+    set /p money=
+    set /p score= 
+    set /p currentDM=
+    set /p playerhasfood=
+    set /p sanityPills=
+    set /p milk=
+    set /p birthdayCake=
+    set /p mrbeastticket=
+    set /p fopsoda=
+    set /p tag=
+)< UserDatas/updateSlots/slot%selectedSlot%/data.fdata
+(
+    set /p version=
+    set /p gamemode=
+)< UserDatas/updateSlots/slot%selectedSlot%/configData.fdata
+goto update
+)
+if "%slotVersion%"=="0.1.2" (
+(
+    set /p health=
+    set /p fhunger=
+    set /p fsanity=
+    set /p fage=
+    set /p factions=
+    set /p money=
+    set /p score= 
+    set /p currentDM=
+    set /p playerhasfood=
+    set /p sanityPills=
+    set /p milk=
+    set /p birthdayCake=
+)< UserDatas/updateSlots/slot%selectedSlot%/data.fdata
+(
+    set /p version=
+    set /p gamemode=
+)< UserDatas/updateSlots/slot%selectedSlot%/configData.fdata
+goto update
+)
+goto updateError
+
+::This is the update process
+:update
+cls
+echo Updating slot's data...
+echo Please wait a moment
+timeout /t 1 /nobreak > nul
+if "%slotVersion%"=="0.1.3" (
+   (
+echo %health%
+echo %fhunger%
+echo %fsanity%
+echo %fage%
+echo %factions%
+echo %fname%
+echo %money%
+echo %score%
+echo %currentDM%
+echo %playerhasfood%
+echo %sanityPills%
+echo %milk%
+echo %birthdayCake%
+echo %mrbeastticket%
+echo %fopsoda%
+echo %tag%
+echo 0
+echo 0
+)> UserDatas/stats/slot%selectedSlot%/data.fdata
+   (
+    echo 0.1.4
+    echo %slotGamemode%
+   )> UserDatas/stats\slot%selectedSlot%\configData.fdata
+   (
+    echo Yes
+)> UserDatas/stats/slot%selectedSlot%/inUse.fdata
+
+   del /Q UserDatas/updateSlots\slot%selectedSlot%
+   goto updateSucc
+)
+if "%slotVersion%"=="0.1.2" (
+   (
+echo %health%
+echo %fhunger%
+echo %fsanity%
+echo %fage%
+echo %factions%
+echo Floppa
+echo %money%
+echo %score%
+echo %currentDM%
+echo %playerhasfood%
+echo %sanityPills%
+echo %milk%
+echo %birthdayCake%
+echo 0
+echo 0
+echo 0
+echo 0
+echo 0
+)> UserDatas/stats/slot%selectedSlot%/data.fdata
+   (
+    echo 0.1.4
+    echo %slotGamemode%
+   )> stats\slot%selectedSlot%\configData.fdata
+   (
+    echo Yes
+)> UserDatas/stats/slot%selectedSlot%/inUse.fdata
+
+   del /Q updateSlots\slot%selectedSlot%
+   goto updateSucc
+)
+goto updateError
+
+::If the updating process was successful
+:updateSucc
+color a0
+cls
+echo.
+echo The updating process was done successfully,
+echo the updated slot was saved in your slot %selectedSlot%
+echo.
+echo Press any key to open RaBF
+pause >nul
+goto rabf
+exit
+
+::If the updating progress went wrong
+:updateError
+color c0
+cls
+echo.
+echo An error ocurred in the updating process, please
+echo try updating slot %selectedSlot% again, if it keeps showing
+echo this error several times, the data of slot %selectedSlot% might be corrupted.
+echo.
+echo Press any key to open RaBF
+pause >nul
+goto rabf
+exit
