@@ -221,7 +221,7 @@ echo         DETAILS
 echo.
 echo   Last Update : 17/8/2022
 echo.
-echo   Size : 98.2 KB
+echo   Size : 98.6 KB
 echo.
 echo   UserName : %User%
 echo   Password : %pass%
