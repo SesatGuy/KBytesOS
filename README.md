@@ -21,7 +21,7 @@ We Have All Features That Everyone Need In Basic Use
 
 # Games
 
-* Raise A Batched Floppa V 0.1.3 By [GladfanIsHere](https://github.com/GladfanIsHere/Raise-a-batched-floppa)
+* Raise A Batched Floppa V 0.1.3 By GladfanIsHere
 * Tic Tac Toe
 * Fantasy RPG
 * Guess The Number
