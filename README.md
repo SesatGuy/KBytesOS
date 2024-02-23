@@ -1,4 +1,3 @@
-> Forked project for KByteOS patch. By tamago_1908
 # KBytesOS
 #### A Open-Sourced Windows's Batch operating system.
 
