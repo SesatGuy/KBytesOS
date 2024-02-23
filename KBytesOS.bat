@@ -280,11 +280,9 @@ echo       OS_Update
 echo.=============================
 echo    KBYTES_OS_V_%version%
 echo.
-echo 1. Added Browser
-echo 2. Added Files Manager
-echo 3. More Details
+echo 1. Improve Login UI
 echo.========================
-echo   Last Update : 27/11/2022
+echo   Last Update : 23/2/2024
 echo.========================
 echo.
 echo [1] Go Back To Setting
