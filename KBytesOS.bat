@@ -1,6 +1,6 @@
 color 0f
 title KBytesOS
-set version=0.5.4
+set version=0.5.41
 @echo off
 setlocal EnableDelayedExpansion
 set "Directory=UserDatas"
@@ -108,10 +108,12 @@ goto options
 
 :options
 cls
-echo Choose an option:
+echo       KBytesOS Login
+echo ==========================
+echo      Choose an option:
 echo.
-echo 1:Register
-echo 2:Login
+echo        1 : Register
+echo        2 : Login
 echo.
 choice /c 12 /n >nul
 if %ERRORLEVEL%==1 goto register
@@ -119,24 +121,46 @@ if %ERRORLEVEL%==2 goto login
 
 :register
 cls
-echo Create Account
+echo       KBytesOS Login
+echo ==========================
+echo       Create Account
+echo ("back" to goto previous page, "@back" to use as username)
 echo.
 set /p "user=Username:"
+if "%user%"=="back" (goto :options)
 set /p "pass=Password:"
-
+set "user=%user:@=%"
 echo '%user%''%pass%'>> UserDatas\usersdata.ltxdata
 goto login
 
 :login
-        cls
-        echo Please Login.
-        echo(
-        set /p "user=Username: "
-        set /p "pass=Password: "
-        
-        goto authenticate
+cls
+findstr /m "." UserDatas\usersdata.ltxdata >nul
+if "%errorlevel%"=="1" (
+    echo       KBytesOS Login
+    echo ==========================
+    echo.
+    echo  You need Register First^^!
+    echo.
+    echo  PRESS ANY KEY TO CONTINUE...
+    pause >nul
+    goto :options
+)
+
+echo       KBytesOS Login
+echo ==========================
+echo.
+echo        Please Login.
+echo ("back" to goto previous page, "@back" to use as username)
+echo.
+set /p "user=Username: "
+if "%user%"=="back" (goto :options)
+set /p "pass=Password: "
+goto authenticate
+
 
 :authenticate
+set "user=%user:@=%"
 for /f "usebackq delims=" %%a in (`type "UserDatas\usersdata.ltxdata" ^| findstr "'%user%''%pass%'"`) do (
     if "%%a"=="'%user%''%pass%'" (
        goto succ
@@ -1533,7 +1557,7 @@ title -Pass Generator- KBytesOS
 cls
 echo I will make you a new password.
 echo Please write the password down somewhere in case you forget it.
-echo ----------------------------------------­-----------------------
+echo ----------------------------------------ï½­-----------------------
 echo 1) 1 Random Password
 echo 2) 5 Random Passwords
 echo 3) 10 Random Passwords
